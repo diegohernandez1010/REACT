@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './style.css'
 
 function NormalClock (){
@@ -6,16 +6,20 @@ function NormalClock (){
     const [minutes, setMinutes] =useState('00')
     const [seconds, setSeconds] =useState('00')
 
-const interval = setInterval(()=>{
-    const date = new Date()
-    const h = date.getHours()
-    const m = date.getMinutes()
-    const s = date.getSeconds()
-    setHour(h)
-    setMinutes(m)
-    setSeconds(s)
-},1000)
+useEffect(()=>{
+    const interval = setInterval(()=>{
+        const date = new Date()
+        const h = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
+        const m = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
+        const s = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds()
+        setHour(h)
+        setMinutes(m)
+        setSeconds(s)
+    },1000)
+    return () => clearInterval(interval)
 
+},[hour, minutes, seconds])
+    
 
 const date = new Date()
 const h = date.getHours()
